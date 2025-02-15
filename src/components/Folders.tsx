@@ -6,8 +6,6 @@ import Folder from './Folder';
 
 const folders = getFolders();
 
-console.log(folders);
-
 const Folders = () => {
   const folderQuantities = useAppSelector(selectFolderMediaQuantities);
 

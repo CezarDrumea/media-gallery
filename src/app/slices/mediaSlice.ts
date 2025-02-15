@@ -34,8 +34,6 @@ const folders = Object.fromEntries(
   [...folderIdsSet].map((id, i) => [id, i === 0])
 );
 
-console.log(folders);
-
 const initialState: MediaStateInterface = {
   files: allFiles,
   selectedFiles: {},
