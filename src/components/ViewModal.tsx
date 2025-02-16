@@ -13,8 +13,12 @@ const ViewModal = ({ onClose, src, description }: ViewModalPropsInterface) => {
 
   return createPortal(
     <div className='inset-0 z-1' onClick={onClose}>
-      <div className='absolute inset-0 bg-secondary-transparent-60 grid place-content-center'>
-        <img src={src} alt={description} />
+      <div className='absolute inset-0 bg-secondary-transparent-60 flex justify-center items-center p-16'>
+        <img
+          src={src}
+          alt={description}
+          className='h-[80%] width-[80%] object-contain'
+        />
       </div>
     </div>,
     portalElement
