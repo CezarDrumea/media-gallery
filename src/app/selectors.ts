@@ -103,3 +103,10 @@ export const selectTransformedFilteredMediaToSelectedMedia = createSelector(
     }, {} as SelectedFilesRecord);
   }
 );
+
+export const selectEditedName = (id: FileIdType) =>
+  createSelector([selectSearchedMedia], (files) => {
+    const file = files.find((file) => file.id === id);
+
+    if (file) return file.name;
+  });

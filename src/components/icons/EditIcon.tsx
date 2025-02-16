@@ -1,9 +1,9 @@
 const EditIcon = ({
   className,
-  onClick,
+  onEdit,
 }: {
   className?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  onEdit?: (e: React.MouseEvent) => void;
 }) => {
   return (
     <svg
@@ -13,7 +13,7 @@ const EditIcon = ({
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       className={className}
-      onClick={onClick}
+      onClick={onEdit}
     >
       <g strokeLinecap='round' strokeLinejoin='round'></g>
       <g>

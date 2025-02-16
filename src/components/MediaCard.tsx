@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import NumberedCheckbox from './checkboxes/NumberedCheckbox';
 import GifIcon from './icons/GifIcon';
 import VideoIcon from './icons/VideoIcon';
@@ -7,9 +7,11 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   addFileToSelectedFiles,
   removeFileFromSelectedFiles,
+  renameFile,
 } from '../app/slices/mediaSlice';
 import { FileInterface } from '../types/file';
-import { selectSelectedMediaOrder } from '../app/selectors';
+import { selectEditedName, selectSelectedMediaOrder } from '../app/selectors';
+import EditIcon from './icons/EditIcon';
 
 interface MediaCardInterface extends FileInterface {
   onOpenModal: (
@@ -28,17 +30,38 @@ const MediaCard = ({
 }: MediaCardInterface) => {
   const dispatch = useAppDispatch();
   const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [localName, setLocalName] = useState(name);
 
   const mediaRef = useRef<HTMLImageElement>(null);
 
   const order = useAppSelector(selectSelectedMediaOrder(id));
   const isSelected = order > 0;
 
+  const editedName = useAppSelector(selectEditedName(id));
+
   const handleHover = (state: boolean) => () => setIsHovered(state);
   const handleSelect = () =>
     isSelected
       ? dispatch(removeFileFromSelectedFiles(id))
       : dispatch(addFileToSelectedFiles(id));
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditing(true);
+  };
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setLocalName(e.target.value);
+
+  const handleFinishEditing = () => {
+    if (localName.trim() && localName !== name)
+      dispatch(renameFile({ id, name: localName }));
+
+    setIsEditing(false);
+  };
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleFinishEditing();
+  };
 
   const isVideoOrGif = extension === 'mp4' || extension === 'gif';
 
@@ -77,6 +100,12 @@ const MediaCard = ({
             className='text-neutral-100 absolute top-1 left-1'
           />
         )}
+        {isHovered && !isSelected && !isEditing && (
+          <EditIcon
+            className='text-neutral-100 absolute bottom-1 right-1'
+            onEdit={handleEditClick}
+          />
+        )}
         {isVideoOrGif && (
           <div className='absolute top-1/2 left-1/2 -translate-1/2 w-7 h-7 rounded-full bg-secondary-transparent-60 grid place-content-center pointer-events-none'>
             {extension === 'mp4' ? (
@@ -93,9 +122,22 @@ const MediaCard = ({
           className='rounded-sm border-2 border-solid border-neutral-60 max-w-full max-h-full'
         />
       </div>
-      <p className='h-7 flex justify-center items-center gap-2 text-xs text-secondary-80'>
-        {name}
-      </p>
+      {isEditing ? (
+        <input
+          className='h-7 flex text-center text-xs text-secondary-100 w-full border-1 border-solid border-secondary-100 rounded-md outline-0'
+          type='text'
+          value={localName}
+          onChange={handleNameChange}
+          onBlur={handleFinishEditing}
+          onKeyDown={handleEnter}
+          autoFocus
+        />
+      ) : (
+        <p className='h-7 flex justify-center items-center text-xs text-secondary-80'>
+          <span>{editedName}</span>
+          <span>.{extension}</span>
+        </p>
+      )}
     </div>
   );
 };

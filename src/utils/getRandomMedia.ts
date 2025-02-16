@@ -27,7 +27,7 @@ const getRandomMedia = (): FileInterface[] =>
 
     return {
       id: `file${i}`,
-      name: `${name}-${i + 1}.${extension}`,
+      name: `${name}-${i + 1}`,
       src: `https://picsum.photos/${height}/${width}`,
       description: `random ${name?.replaceAll('-', '')}`,
       extension,

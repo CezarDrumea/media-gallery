@@ -116,6 +116,15 @@ export const mediaSlice = createSlice({
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
+
+    renameFile: (
+      state,
+      action: PayloadAction<{ id: FileIdType; name: string }>
+    ) => {
+      const file = state.files.find((file) => file.id === action.payload.id);
+
+      if (file) file.name = action.payload.name;
+    },
   },
 });
 
@@ -128,6 +137,7 @@ export const {
   setSelectedFiles,
   setSearchQuery,
   deleteSelectedFiles,
+  renameFile,
 } = mediaSlice.actions;
 
 export default mediaSlice.reducer;
