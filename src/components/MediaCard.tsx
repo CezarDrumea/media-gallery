@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import NumberedCheckbox from './checkboxes/NumberedCheckbox';
 import GifIcon from './icons/GifIcon';
 import VideoIcon from './icons/VideoIcon';
@@ -11,15 +11,25 @@ import {
 import { FileInterface } from '../types/file';
 import { selectSelectedMediaOrder } from '../app/selectors';
 
+interface MediaCardInterface extends FileInterface {
+  onOpenModal: (
+    src: string,
+    description: string
+  ) => (e: React.MouseEvent) => void;
+}
+
 const MediaCard = ({
   id,
   extension,
   src,
   name,
   description,
-}: FileInterface) => {
+  onOpenModal,
+}: MediaCardInterface) => {
   const dispatch = useAppDispatch();
   const [isHovered, setIsHovered] = useState(false);
+
+  const mediaRef = useRef<HTMLImageElement>(null);
 
   const order = useAppSelector(selectSelectedMediaOrder(id));
   const isSelected = order > 0;
@@ -58,7 +68,14 @@ const MediaCard = ({
           />
         )}
         {isHovered && !isSelected && (
-          <ExpandIcon className='text-neutral-100 absolute top-1 left-1' />
+          <ExpandIcon
+            onExpand={
+              mediaRef.current
+                ? onOpenModal(mediaRef.current.src, description)
+                : undefined
+            }
+            className='text-neutral-100 absolute top-1 left-1'
+          />
         )}
         {isVideoOrGif && (
           <div className='absolute top-1/2 left-1/2 -translate-1/2 w-7 h-7 rounded-full bg-secondary-transparent-60 grid place-content-center pointer-events-none'>
@@ -70,6 +87,7 @@ const MediaCard = ({
           </div>
         )}
         <img
+          ref={mediaRef}
           src={src}
           alt={description}
           className='rounded-sm border-2 border-solid border-neutral-60 max-w-full max-h-full'

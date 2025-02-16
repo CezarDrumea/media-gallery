@@ -1,9 +1,28 @@
+import { useState } from 'react';
 import { useAppSelector } from '../app/hooks';
 import { selectSearchedMedia } from '../app/selectors';
 import EmptyFolderIcon from '../components/icons/EmptyFolderIcon';
 import MediaCard from '../components/MediaCard';
+import ViewModal from '../components/ViewModal';
 
 const MediaGrid = () => {
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [openModalProps, setOpenModalProps] = useState({
+    src: '',
+    description: '',
+  });
+  const handleOpenViewModal =
+    (src: string, description: string) => (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsViewModalOpen(true);
+      setOpenModalProps({ src, description });
+    };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setOpenModalProps({ src: '', description: '' });
+  };
+
   const files = useAppSelector(selectSearchedMedia);
   const isEmpty = files.length === 0;
 
@@ -26,9 +45,20 @@ const MediaGrid = () => {
       ) : (
         <>
           {files.map((file) => (
-            <MediaCard {...file} key={file.id} />
+            <MediaCard
+              {...file}
+              key={file.id}
+              onOpenModal={handleOpenViewModal}
+            />
           ))}
         </>
+      )}
+      {isViewModalOpen && (
+        <ViewModal
+          onClose={handleCloseViewModal}
+          src={openModalProps.src}
+          description={openModalProps.description}
+        />
       )}
     </main>
   );

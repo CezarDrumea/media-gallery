@@ -4,13 +4,13 @@ import { setSelectedFolder } from '../app/slices/mediaSlice';
 import { FolderIdType } from '../types/file';
 import FolderIcon from './icons/FolderIcon';
 
-interface FolderProps {
+interface FolderPropsInterface {
   name: string;
   quantity: number;
   folderId: FolderIdType;
 }
 
-const Folder = ({ name, quantity, folderId }: FolderProps) => {
+const Folder = ({ name, quantity, folderId }: FolderPropsInterface) => {
   const dispatch = useAppDispatch();
   const handleSelectFolder = () => dispatch(setSelectedFolder(folderId));
 

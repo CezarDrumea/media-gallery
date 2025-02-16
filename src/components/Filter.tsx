@@ -5,14 +5,14 @@ import { toggleExtensionFilter } from '../app/slices/mediaSlice';
 import { selectExtensionFilters } from '../app/selectors';
 import { ExtensionsType } from '../types/file';
 
-interface FilterProps {
+interface FilterPropsInterface {
   name: string;
   extension: ExtensionsType;
   quantity: number;
   Icon: ComponentType<{ className?: string }>;
 }
 
-const Filter = ({ name, quantity, extension, Icon }: FilterProps) => {
+const Filter = ({ name, quantity, extension, Icon }: FilterPropsInterface) => {
   const dispatch = useAppDispatch();
 
   const isChecked = useAppSelector(selectExtensionFilters)[extension];

@@ -1,4 +1,10 @@
-const ExpandIcon = ({ className }: { className?: string }) => {
+const ExpandIcon = ({
+  className,
+  onExpand,
+}: {
+  className?: string;
+  onExpand?: (e: React.MouseEvent) => void;
+}) => {
   return (
     <svg
       width='16'
@@ -7,6 +13,7 @@ const ExpandIcon = ({ className }: { className?: string }) => {
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
       className={className}
+      onClick={onExpand}
     >
       <path
         fillRule='evenodd'
