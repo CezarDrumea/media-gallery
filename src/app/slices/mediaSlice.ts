@@ -125,6 +125,16 @@ export const mediaSlice = createSlice({
 
       if (file) file.name = action.payload.name;
     },
+
+    changeFolder: (state, action: PayloadAction<FolderIdType>) => {
+      const selectedFilesIds = new Set(
+        Object.keys(state.selectedFiles) as FileIdType[]
+      );
+
+      state.files.forEach((file) => {
+        if (selectedFilesIds.has(file.id)) file.folderId = action.payload;
+      });
+    },
   },
 });
 
@@ -138,6 +148,7 @@ export const {
   setSearchQuery,
   deleteSelectedFiles,
   renameFile,
+  changeFolder,
 } = mediaSlice.actions;
 
 export default mediaSlice.reducer;
