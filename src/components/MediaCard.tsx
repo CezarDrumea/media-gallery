@@ -127,6 +127,7 @@ const MediaCard = ({
           className='h-7 flex text-center text-xs text-secondary-100 w-full border-1 border-solid border-secondary-100 rounded-md outline-0'
           type='text'
           value={localName}
+          onClick={(e) => e.stopPropagation()}
           onChange={handleNameChange}
           onBlur={handleFinishEditing}
           onKeyDown={handleEnter}
