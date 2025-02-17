@@ -52,7 +52,7 @@ pnpm run dev
 
 ![remove-media](photos/image-remove-media.png)
 
-- Selecting media and then pressing to the bin button will remove the selected media
+- Selecting media and then pressing the bin button will remove the selected media
 
 ### Expand media:
 
